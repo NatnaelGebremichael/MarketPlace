@@ -1,26 +1,25 @@
-require("dotenv").config();
-const mongoose = require("mongoose");
-const express = require("express");
+import dotenv from "dotenv";
+dotenv.config();
+import { connect } from "mongoose";
+import express, { json } from "express";
+import productsRouter from "../routes/products.js";
 
 const app = express(); //Create Express Application
-app.use(express.json()); //for parsing application/json
+app.use(json()); //for parsing application/json
 
 // Connect to MongoDB
-const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-});
-const connection = mongoose.connection;
-connection.once("open", () => {
-  console.log("MongoDB database connection established successfully");
-});
+// Read and Encode credentials
+const encodedUsername = encodeURIComponent(process.env.rawUsername);
+const encodedPassword = encodeURIComponent(process.env.rawPassword);
+const uri = `mongodb+srv://${encodedUsername}:${encodedPassword}@${process.env.clusterUrl}?retryWrites=true&w=majority`;
 
-// Requiring the product routes
-const productsRouter = require("./routes/products");
+connect(uri)
+  .then(() =>
+    console.log("MongoDB database connection established successfully")
+  )
+  .catch((err) => console.error("Could not connect to MongoDB...", err));
 
-// Use productsRouter for any requests going to '/products'
+//Use productsRouter for any requests going to '/products'
 app.use("/products", productsRouter);
 
 // Start the server
