@@ -1,5 +1,19 @@
-// eview or Rating Model
+import mongoose from "mongoose";
 
-// Purpose: Manages product reviews or ratings by users.
+const ratingSchema = new mongoose.Schema(
+  {
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
+    rating: { type: Number, required: true, min: 1 },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-// Attributes: Include review ID, user reference, product reference, rating score, review text, and timestamps.
+const Rating = mongoose.model("Order", ratingSchema);
+
+export default Rating;

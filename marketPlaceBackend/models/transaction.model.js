@@ -1,5 +1,24 @@
-// Transaction Model
+import mongoose from "mongoose";
 
-// Purpose: Manages payment transactions.
+const transactionSchema = new mongoose.Schema(
+  {
+    orderId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
+      required: true,
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    amount: { type: Number, required: true },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-// Attributes: Include transaction ID, user reference, order reference, payment details (amount, method, provider), and transaction status (e.g., pending, completed, failed).
+const Transaction = mongoose.model("Transaction", transactionSchema);
+
+export default Transaction;

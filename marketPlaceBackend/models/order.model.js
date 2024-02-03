@@ -1,5 +1,29 @@
-// Order Model
+import mongoose from "mongoose";
 
-// Purpose: Manages customer orders.
+const orderSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    products: [
+      {
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+          required: true,
+        },
+        quantity: { type: Number, required: true, min: 1 },
+      },
+    ],
+    status: { type: String, required: true },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-// Attributes: Include order ID, user reference (who placed the order), product references (what was ordered), quantities, prices, order status (e.g., pending, shipped, delivered), and timestamps.
+const Order = mongoose.model("Order", orderSchema);
+
+export default Order;

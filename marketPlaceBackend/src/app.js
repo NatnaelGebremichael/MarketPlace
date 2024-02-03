@@ -11,7 +11,7 @@ app.use(json()); //for parsing application/json
 // Read and Encode credentials
 const encodedUsername = encodeURIComponent(process.env.rawUsername);
 const encodedPassword = encodeURIComponent(process.env.rawPassword);
-const uri = `mongodb+srv://${encodedUsername}:${encodedPassword}@${process.env.clusterUrl}?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${encodedUsername}:${encodedPassword}@${process.env.clusterUrl}${process.env.db}?retryWrites=true&w=majority`;
 
 connect(uri)
   .then(() =>
