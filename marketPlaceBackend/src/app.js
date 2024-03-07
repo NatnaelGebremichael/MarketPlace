@@ -2,8 +2,9 @@ import dotenv from "dotenv";
 dotenv.config();
 import { connect } from "mongoose";
 import express, { json } from "express";
-import productsRouter from "../routes/productsRoutes.js";
-import userRouter from "../routes/userRoutes.js";
+import productsRouter from "../routes/productsRouter.js";
+import userRouter from "../routes/userRouter.js";
+import orderRouter from "../routes/orderRouter.js";
 
 const app = express(); //Create Express Application
 app.use(json()); //for parsing application/json
@@ -22,7 +23,10 @@ connect(uri)
 
 // use relevant x.Router for any requests recived
 app.use("/user", userRouter);
+app.use("/order", orderRouter);
 app.use("/products", productsRouter);
+
+// app.use("/products", productsRouter);
 
 // Start the server
 const port = process.env.PORT || 5000;
